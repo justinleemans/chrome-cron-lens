@@ -1,0 +1,23 @@
+{
+	"name": "cron-lens",
+	"type": "module",
+	"version": "2026.5.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.18",
+		"cronstrue": "^3.14.0",
+		"tailwindcss": "^4.1.18",
+		"vue": "^3.5.30"
+	},
+	"devDependencies": {
+		"@crxjs/vite-plugin": "^2.4.0",
+		"@types/chrome": "^0.1.37",
+		"@vitejs/plugin-vue": "^6.0.5",
+		"vite": "^8.0.0",
+		"vite-plugin-zip-pack": "^1.2.4"
+	}
+}
