@@ -5,7 +5,7 @@ export default defineManifest({
 	manifest_version: 3,
 	name: "Cron Lens",
 	version: pkg.version,
-	description: "",
+	description: "A chrome extension to add human readable context to cron expressions on web pages",
 	icons: {
 		"16": "public/icon-16.png",
         "32": "public/icon-32.png",
