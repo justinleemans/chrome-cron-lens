@@ -1,4 +1,5 @@
 import cronstrue from 'cronstrue';
+import { send } from 'vite';
 
 var activeMode = true;
 
@@ -14,6 +15,15 @@ const observer = new MutationObserver((mutations) => {
 	}
 });
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.type !== "replace-cron") {
+		return;
+	}
+
+	replaceCron(document.body);
+	sendResponse({ success: true });
+});
+
 async function init() {
 	const result = await chrome.storage.local.get("mode");
 
@@ -24,10 +34,6 @@ async function init() {
 	if(activeMode) {
 		replaceCron(document.body);
 	}
-}
-
-export function replaceCronOnPage() {
-	console.log("replacing...");
 }
 
 function replaceCron(node) {

@@ -1,7 +1,7 @@
 {
 	"name": "cron-lens",
 	"type": "module",
-	"version": "2026.5.1",
+	"version": "2026.5.9",
 	"private": true,
 	"scripts": {
 		"dev": "vite",

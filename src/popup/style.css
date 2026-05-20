@@ -18,5 +18,5 @@ body {
 }
 
 #app {
-    @apply max-w-[1280px] mx-auto p-8 text-center;
+    @apply max-w-7xl mx-auto p-8 text-center;
 }

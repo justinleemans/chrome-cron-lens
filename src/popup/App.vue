@@ -1,19 +1,17 @@
 <template>
 	<div class="flex flex-col gap-4 items-stretch mb-[1.5em]">
 		<Toggle leftLabel="Passive" rightLabel="Active" v-model="activeMode" @update:model-value="toggleActiveMode"/>
-		<Button v-if="!activeMode" :action="replaceCronOnPage">Replace</Button>
+		<Button v-if="!activeMode" :action="replaceCron">Replace</Button>
 	</div>
 	<Footer/>
 </template>
 
 <script setup>
-    import { ref, onMounted } from "vue";
-
 	import Button from "../components/input/Button.vue";
 	import Footer from "../components/footer/Footer.vue";
 	import Toggle from "../components/input/Toggle.vue";
 
-	import { replaceCronOnPage } from "../content/content.js";
+	import { ref, onMounted } from "vue";
 
 	const activeMode = ref(true);
 
@@ -27,5 +25,10 @@
 
 	async function toggleActiveMode() {
 		await chrome.storage.local.set({mode: activeMode.value});
+	}
+
+	async function replaceCron() {
+		const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+		const response = await chrome.tabs.sendMessage({ type: "replace-cron" });
 	}
 </script>
