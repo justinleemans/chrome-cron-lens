@@ -24,11 +24,11 @@
 	});
 
 	async function toggleActiveMode() {
-		await chrome.storage.local.set({mode: activeMode.value});
+		await chrome.storage.local.set({ mode: activeMode.value });
 	}
 
 	async function replaceCron() {
-		const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
-		const response = await chrome.tabs.sendMessage({ type: "replace-cron" });
+		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+		const response = await chrome.tabs.sendMessage(tab.id, { type: "replace-cron" });
 	}
 </script>

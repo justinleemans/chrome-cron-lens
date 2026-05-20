@@ -1,5 +1,4 @@
 import cronstrue from 'cronstrue';
-import { send } from 'vite';
 
 var activeMode = true;
 
@@ -16,10 +15,6 @@ const observer = new MutationObserver((mutations) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	if (message.type !== "replace-cron") {
-		return;
-	}
-
 	replaceCron(document.body);
 	sendResponse({ success: true });
 });
