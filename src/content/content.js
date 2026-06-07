@@ -42,7 +42,15 @@ function replaceCron(node) {
 	}
 
 	const original = node.nodeValue;
-	const replaced = original.replace(cronRegex, (match) => {
+	const replaced = original.replace(cronRegex, function(match, ...args) {
+		const offset = args[args.length - 2];
+		const string = args[args.length - 1];
+		const afterMatch = string.slice(offset + match.length);
+
+		if (/^\s*→/.test(afterMatch)) {
+			return match;
+		}
+
 		try {
 			const human = cronstrue.toString(match);
 			return ` ${match} → ${human} `;
