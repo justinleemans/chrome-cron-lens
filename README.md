@@ -1,3 +1,5 @@
+![icon](/public/icon-128.png)
+
 # Cron Lens Chrome extension
 
 Cron Lens is a Chrome extension to replace all chrome expressions on webpages with a human readable format. The extension features a passive and active mode where passive allows you to add the human readable format with the press of a button and active mode activly replaces all cron expressions on a page.
