@@ -25,6 +25,10 @@
 
 	async function toggleActiveMode() {
 		await chrome.storage.local.set({ mode: activeMode.value });
+
+		if (activeMode.value) {
+			await replaceCron();
+		}
 	}
 
 	async function replaceCron() {
