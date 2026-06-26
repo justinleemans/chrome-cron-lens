@@ -1,13 +1,14 @@
 import cronstrue from 'cronstrue';
 
 var activeMode = true;
+var militaryTime = false;
 
 const cronRegex = /(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/;
 
 const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-		for (const node of mutation.addedNodes) {
-			if(activeMode) {
+    if(activeMode) {
+		for (const mutation of mutations) {
+			for (const node of mutation.addedNodes) {
 				replaceCron(node);
 			}
 		}
@@ -20,10 +21,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 async function init() {
-	const result = await chrome.storage.local.get("mode");
+	const settings = await chrome.storage.local.get();
 
-	if (typeof result.mode === "boolean") {
-		activeMode = result.mode;
+	if (typeof settings.activeMode === "boolean") {
+		activeMode = settings.activeMode;
+	}
+
+	if (typeof settings.militaryTime === "boolean") {
+		militaryTime = settings.militaryTime;
 	}
 
 	if(activeMode) {
@@ -52,7 +57,7 @@ function replaceCron(node) {
 		}
 
 		try {
-			const human = cronstrue.toString(match);
+			const human = cronstrue.toString(match, { use24HourTimeFormat: militaryTime });
 			return ` ${match} → ${human} `;
 		} catch {
 			return match;

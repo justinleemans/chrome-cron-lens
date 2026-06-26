@@ -2,6 +2,7 @@
 	<div class="flex flex-col gap-4 items-stretch mb-[1.5em]">
 		<Toggle leftLabel="Passive" rightLabel="Active" v-model="activeMode" @update:model-value="toggleActiveMode"/>
 		<Button v-if="!activeMode" :action="replaceCron">Replace</Button>
+		<Toggle leftLabel="12h" rightLabel="24h" v-model="militaryTime" @update:model-value="toggleMilitaryTime"/>
 	</div>
 	<Footer/>
 </template>
@@ -14,25 +15,36 @@
 	import { ref, onMounted } from "vue";
 
 	const activeMode = ref(true);
+	const militaryTime = ref(false);
 
 	onMounted(async () => {
-		const result = await chrome.storage.local.get("mode");
+        const storedActiveMode = await chrome.storage.local.get("activeMode");
 
-		if (typeof result.mode === "boolean") {
-			activeMode.value = result.mode;
-		}
-	});
+        if (typeof storedActiveMode.activeMode === "boolean") {
+            activeMode.value = storedActiveMode.activeMode;
+        }
 
-	async function toggleActiveMode() {
-		await chrome.storage.local.set({ mode: activeMode.value });
+        const storedMilitaryTime = await chrome.storage.local.get("militaryTime");
 
-		if (activeMode.value) {
-			await replaceCron();
-		}
-	}
+        if (typeof storedMilitaryTime.militaryTime === "boolean") {
+            militaryTime.value = storedMilitaryTime.militaryTime;
+        }
+    });
 
-	async function replaceCron() {
-		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-		const response = await chrome.tabs.sendMessage(tab.id, { type: "replace-cron" });
-	}
+    async function toggleActiveMode() {
+        await chrome.storage.local.set({ activeMode: activeMode.value });
+
+        if (activeMode.value) {
+            await replaceCron();
+        }
+    }
+
+    async function toggleMilitaryTime() {
+        await chrome.storage.local.set({ militaryTime: militaryTime.value });
+    }
+
+    async function replaceCron() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const response = await chrome.tabs.sendMessage(tab.id, { type: "replace-cron" });
+    }
 </script>
